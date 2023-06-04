@@ -15,7 +15,7 @@ model User {
   email String @unique
   name String
   phone String
-  register_date DateTime
+  register_date String
   is_staff Boolean
   wallet_id Int
 
