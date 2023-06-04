@@ -13,12 +13,39 @@ export class UsersPrismaRepository implements UsersRepository {
     const user = new User();
     Object.assign(user, { ...data });
     const newUser = await this.prisma.user.create({ data: { ...user } });
+    console.log(newUser, plainToInstance(User, newUser));
     return plainToInstance(User, newUser);
   }
 
-  // findAll(): Promise<User[]> {}
+  async findAll(): Promise<User[]> {
+    const user = await this.prisma.user.findMany();
+    return plainToInstance(User, user);
+  }
 
-  // findOne(): Promise<User> {}
-  // delete(): Promise<void> {}
-  // update(data: UpdateUserDto): Promise<User> {}
+  async findOne(id: string): Promise<User> {
+    const user = await this.prisma.user.findUnique({
+      where: { id: parseInt(id) },
+    });
+    return plainToInstance(User, user);
+  }
+
+  async findByEmail(email: string): Promise<User> {
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+    });
+
+    return plainToInstance(User, user);
+  }
+
+  async update(id: string, data: UpdateUserDto): Promise<User> {
+    const user = await this.prisma.user.update({
+      where: { id: parseInt(id) },
+      data: { ...data },
+    });
+
+    return plainToInstance(User, user);
+  }
+  async delete(id: string): Promise<void> {
+    await this.prisma.user.delete({ where: { id: parseInt(id) } });
+  }
 }

@@ -11,19 +11,23 @@ export class UsersService {
     return this.usersRepository.create(createUserDto);
   }
 
-  // findAll() {
-  //   return this.usersRepository.findAll();
-  // }
+  findAll() {
+    return this.usersRepository.findAll();
+  }
 
-  // findOne(id: number) {
-  //   return this.usersRepository.findOne(id);
-  // }
+  findOne(id: string) {
+    return this.usersRepository.findOne(id);
+  }
 
-  // update(id: number, updateUserDto: UpdateUserDto) {
-  //   return this.usersRepository.update(id, updateUserDto);
-  // }
+  findByEmail(email: string) {
+    return this.usersRepository.findByEmail(email);
+  }
 
-  // remove(id: number) {
-  //   return this.usersRepository.create(id);
-  // }
+  update(id: string, updateUserDto: UpdateUserDto) {
+    return this.usersRepository.update(id, updateUserDto);
+  }
+
+  remove(id: string) {
+    return this.usersRepository.delete(id);
+  }
 }
