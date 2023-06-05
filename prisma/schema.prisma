@@ -13,14 +13,14 @@ datasource db {
 model User {
   id Int @id @default(autoincrement())
   email String @unique
+  password String
   name String
   phone String
   register_date String
   is_staff Boolean
-  wallet_id Int
 
-  wallet Wallet @relation("ContactsOnWallet",fields: [wallet_id], references: [id])
-  wallet_owner Wallet? @relation("UserOnWallet")
+  wallets_client Wallet[] @relation("ContactsOnWallet")
+  my_wallet Wallet? @relation("UserOnWallet")
   
   @@map("users")
 }
@@ -29,9 +29,9 @@ model Wallet {
   id Int @id @default(autoincrement())
   user_id Int @unique
 
-  contacts User[] @relation("ContactsOnWallet")
+  contacts User[]  @relation("ContactsOnWallet") 
   user User @relation("UserOnWallet",fields: [user_id], references: [id])
 
   
-  @@map("Wallets")
+  @@map("wallets")
 }

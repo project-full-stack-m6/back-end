@@ -35,8 +35,4 @@ export class CreateUserDto {
 
   @IsBoolean()
   is_staff: boolean;
-
-  @IsNotEmpty()
-  @IsNumber()
-  wallet_id: number;
 }

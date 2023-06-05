@@ -6,5 +6,6 @@ export class User {
   phone: string;
   register_date: string;
   is_staff: boolean;
-  wallet_id: number;
+
+  wallet_id?: number;
 }

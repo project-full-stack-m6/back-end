@@ -10,8 +10,8 @@ export class UsersInMemoryRepository implements UsersRepository {
     const user = new User();
     Object.assign(user, { ...data });
 
-    const newUser = users.push(user);
-    return plainToInstance(User, newUser);
+    users.push(user);
+    return plainToInstance(User, user);
   }
 
   findAll(): Promise<User[]> | User[] {
