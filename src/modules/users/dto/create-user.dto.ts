@@ -29,10 +29,6 @@ export class CreateUserDto {
   @IsString()
   phone: string;
 
-  @IsNotEmpty()
-  @IsString()
-  register_date: string;
-
   @IsBoolean()
-  is_staff: boolean;
+  is_staff?: boolean;
 }

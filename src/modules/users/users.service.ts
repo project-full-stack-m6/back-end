@@ -15,12 +15,12 @@ export class UsersService {
     return this.usersRepository.findAll();
   }
 
-  findOne(id: string) {
-    return this.usersRepository.findOne(id);
+  async findOne(userId: string) {
+    return await this.usersRepository.findOne(parseInt(userId));
   }
 
-  findByEmail(email: string) {
-    return this.usersRepository.findByEmail(email);
+  async findByEmail(email: string) {
+    return await this.usersRepository.findByEmail(email);
   }
 
   update(id: string, updateUserDto: UpdateUserDto) {

@@ -1,24 +1,23 @@
-import { User } from 'src/modules/users/entities/user.entity';
 import { CreateWalletDto } from '../../dto/create-wallet.dto';
 import { Wallet } from '../../entities/wallet.entity';
 import { WalletsRepository } from '../wallets.repository';
 import { PrismaService } from 'src/database/prisma.service';
-import { plainToInstance } from 'class-transformer';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class WalletsPrismaRepository implements WalletsRepository {
   constructor(private prisma: PrismaService) {}
 
-  async create(
-    createWalletDto: CreateWalletDto,
-    userId: number,
-  ): Promise<Wallet> {
+  async create(userEmail: string, userId: number): Promise<Wallet> {
     const wallet = await this.prisma.wallet.findUnique({
       where: { user_id: userId },
       include: { contacts: true },
     });
 
+    console.log('email', userEmail, 'userId', userId);
+
     const user = await this.prisma.user.findUnique({
-      where: { email: createWalletDto.email },
+      where: { email: userEmail },
     });
 
     if (!wallet) {
@@ -48,8 +47,10 @@ export class WalletsPrismaRepository implements WalletsRepository {
     return update;
   }
 
-  findWallet(userId: number): Wallet | Promise<Wallet> {
-    const wallet = this.prisma.wallet.findUnique({ where: { id: userId } });
+  async findWallet(userId: number): Promise<Wallet> {
+    const wallet = await this.prisma.wallet.findUnique({
+      where: { id: userId },
+    });
 
     return wallet;
   }

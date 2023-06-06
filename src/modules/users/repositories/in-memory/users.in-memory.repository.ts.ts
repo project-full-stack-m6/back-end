@@ -18,8 +18,8 @@ export class UsersInMemoryRepository implements UsersRepository {
     return plainToInstance(User, users);
   }
 
-  findOne(id: string): Promise<User> | User {
-    const user = users.find((user) => user.id === parseInt(id));
+  findOne(userId): Promise<User> | User {
+    const user = users.find((user) => user.id === userId);
     return plainToInstance(User, user);
   }
 

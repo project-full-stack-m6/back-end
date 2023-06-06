@@ -7,18 +7,30 @@ import {
   Param,
   Delete,
   Request,
+  UseGuards,
+  UseInterceptors,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { WalletsService } from './wallets.service';
 import { CreateWalletDto } from './dto/create-wallet.dto';
 import { UpdateWalletDto } from './dto/update-wallet.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth-guard';
+import { validate } from 'class-validator';
+import { error } from 'console';
 
 @Controller('wallets')
 export class WalletsController {
   constructor(private readonly walletsService: WalletsService) {}
 
   @Post()
-  create(@Body() createWalletDto: CreateWalletDto, @Request() req) {
-    return this.walletsService.create(createWalletDto, req);
+  @UseGuards(JwtAuthGuard)
+  async create(@Request() req, @Body() createWalletDto) {
+    const userId: number = parseInt(req.user.id);
+    const userEmail = createWalletDto.email;
+
+    console.log(createWalletDto, userEmail);
+
+    return await this.walletsService.create(userEmail, userId);
   }
 
   @Get()

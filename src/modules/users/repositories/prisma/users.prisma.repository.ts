@@ -5,14 +5,15 @@ import { User } from '../../entities/user.entity';
 import { UsersRepository } from '../users.repository';
 import { PrismaService } from 'src/database/prisma.service';
 import { plainToInstance } from 'class-transformer';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class UsersPrismaRepository implements UsersRepository {
   constructor(private prisma: PrismaService) {}
 
   async create(data: CreateUserDto): Promise<User> {
     const user = new User();
     Object.assign(user, { ...data });
-    console.log(user);
     const newUser = await this.prisma.user.create({ data: { ...user } });
     return plainToInstance(User, newUser);
   }
@@ -22,19 +23,19 @@ export class UsersPrismaRepository implements UsersRepository {
     return plainToInstance(User, user);
   }
 
-  async findOne(id: string): Promise<User> {
+  async findOne(userId): Promise<User> {
     const user = await this.prisma.user.findUnique({
-      where: { id: parseInt(id) },
+      where: { id: userId },
     });
     return plainToInstance(User, user);
   }
 
   async findByEmail(email: string): Promise<User> {
     const user = await this.prisma.user.findUnique({
-      where: { email },
+      where: { email: email },
     });
 
-    return plainToInstance(User, user);
+    return user;
   }
 
   async update(id: string, data: UpdateUserDto): Promise<User> {

@@ -6,8 +6,8 @@ import { WalletsRepository } from './repository/wallets.repository';
 @Injectable()
 export class WalletsService {
   constructor(private walletsRepository: WalletsRepository) {}
-  create(createWalletDto: CreateWalletDto, userId: number) {
-    return this.walletsRepository.create(createWalletDto, userId);
+  create(userEmail: string, userId: number) {
+    return this.walletsRepository.create(userEmail, userId);
   }
 
   findWallet(userId: number) {

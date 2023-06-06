@@ -16,8 +16,8 @@ model User {
   password String
   name String
   phone String
-  register_date String
-  is_staff Boolean
+  created_at DateTime @default(now())
+  is_staff Boolean @default(false)
 
   wallets_client Wallet[] @relation("ContactsOnWallet")
   my_wallet Wallet? @relation("UserOnWallet")
