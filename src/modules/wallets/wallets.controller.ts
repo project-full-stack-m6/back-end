@@ -15,28 +15,36 @@ import { WalletsService } from './wallets.service';
 import { CreateWalletDto } from './dto/create-wallet.dto';
 import { UpdateWalletDto } from './dto/update-wallet.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth-guard';
-import { validate } from 'class-validator';
-import { error } from 'console';
+import { UsersService } from '../users/users.service';
+import { NotFoundException } from '@nestjs/common/exceptions';
 
 @Controller('wallets')
 export class WalletsController {
-  constructor(private readonly walletsService: WalletsService) {}
+  constructor(
+    private readonly walletsService: WalletsService,
+    private readonly usersService: UsersService,
+  ) {}
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  async create(@Request() req, @Body() createWalletDto) {
+  @UseInterceptors(ClassSerializerInterceptor)
+  async create(@Request() req, @Body() createWalletDto: CreateWalletDto) {
     const userId: number = parseInt(req.user.id);
     const userEmail = createWalletDto.email;
 
-    console.log(createWalletDto, userEmail);
+    const findUser = await this.usersService.findByEmail(userEmail);
+
+    if (!findUser) {
+      throw new NotFoundException({ message: 'User not found' });
+    }
 
     return await this.walletsService.create(userEmail, userId);
   }
 
-  @Get()
-  findAll() {
-    return this.walletsService.findAll();
-  }
+  // @Get()
+  // findAll() {
+  //   return this.walletsService.findAll();
+  // }
 
   @Get(':id')
   findOne(@Param('id') id: string) {

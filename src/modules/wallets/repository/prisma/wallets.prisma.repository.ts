@@ -1,4 +1,3 @@
-import { CreateWalletDto } from '../../dto/create-wallet.dto';
 import { Wallet } from '../../entities/wallet.entity';
 import { WalletsRepository } from '../wallets.repository';
 import { PrismaService } from 'src/database/prisma.service';
@@ -13,8 +12,6 @@ export class WalletsPrismaRepository implements WalletsRepository {
       where: { user_id: userId },
       include: { contacts: true },
     });
-
-    console.log('email', userEmail, 'userId', userId);
 
     const user = await this.prisma.user.findUnique({
       where: { email: userEmail },
@@ -34,6 +31,7 @@ export class WalletsPrismaRepository implements WalletsRepository {
       const update = await this.prisma.wallet.update({
         where: { user_id: userId },
         data: { contacts: { set: [...createWallet.contacts, user] } },
+        include: { contacts: true },
       });
 
       return update;
@@ -41,7 +39,8 @@ export class WalletsPrismaRepository implements WalletsRepository {
 
     const update = await this.prisma.wallet.update({
       where: { user_id: userId },
-      data: { contacts: { set: [...wallet.contacts, user] } },
+      data: { contacts: { connect: { id: user.id } } },
+      include: { contacts: true },
     });
 
     return update;
@@ -50,6 +49,7 @@ export class WalletsPrismaRepository implements WalletsRepository {
   async findWallet(userId: number): Promise<Wallet> {
     const wallet = await this.prisma.wallet.findUnique({
       where: { id: userId },
+      include: { contacts: true },
     });
 
     return wallet;

@@ -26,6 +26,7 @@ export class UsersPrismaRepository implements UsersRepository {
   async findOne(userId): Promise<User> {
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
+      include: { my_wallet: { include: { contacts: true } } },
     });
     return plainToInstance(User, user);
   }

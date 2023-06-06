@@ -14,14 +14,14 @@ export class WalletsInMemoryRepository implements WalletsRepository {
       const newWallet = new Wallet();
       Object.assign(newWallet, { user_id: userId });
 
-      newWallet.contacts = [...newWallet.contacts, user.id];
+      newWallet.contacts = [...newWallet.contacts, user];
 
       this.wallets.push(newWallet);
 
       return newWallet;
     }
 
-    wallet.contacts = [...wallet.contacts, user.id];
+    wallet.contacts = [...wallet.contacts, user];
 
     return wallet;
   }
