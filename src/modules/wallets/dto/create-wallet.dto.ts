@@ -5,6 +5,4 @@ export class CreateWalletDto {
   @IsNotEmpty()
   @IsString()
   email: string;
-
-  contacts: User[];
 }

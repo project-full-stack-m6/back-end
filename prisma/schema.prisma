@@ -18,6 +18,7 @@ model User {
   phone String
   created_at DateTime @default(now())
   is_staff Boolean @default(false)
+  is_admin Boolean @default(false)
 
   wallets_client Wallet[] @relation("ContactsOnWallet")
   my_wallet Wallet? @relation("UserOnWallet")
@@ -30,7 +31,7 @@ model Wallet {
   user_id Int @unique
 
   contacts User[]  @relation("ContactsOnWallet") 
-  user User @relation("UserOnWallet",fields: [user_id], references: [id])
+  user User @relation("UserOnWallet",fields: [user_id], references: [id] , onDelete: Cascade)
 
   
   @@map("wallets")

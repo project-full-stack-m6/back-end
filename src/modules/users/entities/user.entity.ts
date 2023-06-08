@@ -9,7 +9,8 @@ export class User {
   password: string;
   phone: string;
   readonly created_at: Date;
-  is_staff: boolean;
+  is_staff?: boolean;
+  is_admin?: boolean;
 
   wallet_id?: number;
 }

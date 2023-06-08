@@ -14,13 +14,14 @@ import {
 import { WalletsService } from './wallets.service';
 import { CreateWalletDto } from './dto/create-wallet.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth-guard';
+import { StaffGuard } from '../auth/is_staff-auth.guard';
 
 @Controller('wallets')
 export class WalletsController {
   constructor(private readonly walletsService: WalletsService) {}
 
   @Post()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, StaffGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   async create(@Request() req, @Body() createWalletDto: CreateWalletDto) {
     const userId: number = parseInt(req.user.id);

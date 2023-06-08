@@ -17,14 +17,14 @@ export class WalletsPrismaRepository implements WalletsRepository {
       where: { email: userEmail },
     });
 
-    if (!wallet) {
+    if (!wallet || wallet === null) {
       const newWallet = new Wallet();
       Object.assign(newWallet, {
-        user_id: user.id,
+        user_id: userId,
       });
 
       const createWallet = await this.prisma.wallet.create({
-        data: { id: newWallet.id, user_id: user.id },
+        data: { user_id: newWallet.user_id },
         include: { contacts: true },
       });
 

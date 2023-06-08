@@ -15,6 +15,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth-guard';
+import { AdminGuard } from '../auth/is_admin-auth.guard';
 
 @Controller('users')
 export class UsersController {
@@ -27,21 +28,37 @@ export class UsersController {
   }
 
   @UseInterceptors(ClassSerializerInterceptor)
+  @Get('all')
+  @UseGuards(JwtAuthGuard, AdminGuard)
+  findAll() {
+    return this.usersService.findAll();
+  }
+
+  @UseInterceptors(ClassSerializerInterceptor)
   @Get()
   @UseGuards(JwtAuthGuard)
   findOne(@Request() req) {
-    return this.usersService.findOne(req.user.id);
+    const userId = parseInt(req.user.id);
+    return this.usersService.findOne(userId);
   }
 
   @UseInterceptors(ClassSerializerInterceptor)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(id, updateUserDto);
+  @UseGuards(JwtAuthGuard, AdminGuard)
+  update(
+    @Param('id') id: string,
+    @Request() req,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    const userId = parseInt(id);
+    return this.usersService.update(userId, req.user.email, updateUserDto);
   }
 
   @UseInterceptors(ClassSerializerInterceptor)
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, AdminGuard)
   remove(@Param('id') id: string) {
-    return this.usersService.remove(id);
+    const userId = parseInt(id);
+    return this.usersService.remove(userId);
   }
 }

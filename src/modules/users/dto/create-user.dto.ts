@@ -3,9 +3,13 @@ import { Transform } from 'class-transformer';
 import {
   IsEmail,
   IsString,
+  IsEmpty,
   IsNotEmpty,
   IsBoolean,
   MinLength,
+  validate,
+  Matches,
+  isEmpty,
 } from 'class-validator';
 
 export class CreateUserDto {
@@ -26,8 +30,12 @@ export class CreateUserDto {
 
   @IsNotEmpty()
   @IsString()
+  // @Matches('(\\(?\\d{2}\\)?\\s)(\\d{4,5}\\-?\\d{4})')
   phone: string;
 
   @IsBoolean()
   is_staff?: boolean;
+
+  @IsBoolean()
+  is_admin?: boolean;
 }

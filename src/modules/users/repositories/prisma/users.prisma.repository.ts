@@ -1,4 +1,3 @@
-import { users } from 'src/database/db';
 import { CreateUserDto } from '../../dto/create-user.dto';
 import { UpdateUserDto } from '../../dto/update-user.dto';
 import { User } from '../../entities/user.entity';
@@ -39,15 +38,15 @@ export class UsersPrismaRepository implements UsersRepository {
     return user;
   }
 
-  async update(id: string, data: UpdateUserDto): Promise<User> {
+  async update(userId: number, data: UpdateUserDto): Promise<User> {
     const user = await this.prisma.user.update({
-      where: { id: parseInt(id) },
+      where: { id: userId },
       data: { ...data },
     });
 
     return plainToInstance(User, user);
   }
-  async delete(id: string): Promise<void> {
-    await this.prisma.user.delete({ where: { id: parseInt(id) } });
+  async delete(id: number): Promise<void> {
+    await this.prisma.user.delete({ where: { id: id } });
   }
 }

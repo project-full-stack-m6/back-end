@@ -28,8 +28,8 @@ export class UsersInMemoryRepository implements UsersRepository {
     return plainToInstance(User, user);
   }
 
-  update(id: string, data: UpdateUserDto): Promise<User> | User {
-    const userIndex = users.findIndex((user) => user.id === parseInt(id));
+  update(id: number, data: UpdateUserDto): Promise<User> | User {
+    const userIndex = users.findIndex((user) => user.id === id);
     users[userIndex] = {
       ...users[userIndex],
       ...data,
@@ -38,8 +38,8 @@ export class UsersInMemoryRepository implements UsersRepository {
     return plainToInstance(User, userIndex);
   }
 
-  delete(id: string): Promise<void> | void {
-    const userIndex = users.findIndex((user) => user.id === parseInt(id));
+  delete(id: number): Promise<void> | void {
+    const userIndex = users.findIndex((user) => user.id === id);
     users.splice(userIndex, 1);
   }
 }
