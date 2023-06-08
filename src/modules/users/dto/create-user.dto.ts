@@ -10,6 +10,8 @@ import {
   validate,
   Matches,
   isEmpty,
+  IsObject,
+  IsOptional,
 } from 'class-validator';
 
 export class CreateUserDto {
@@ -33,9 +35,11 @@ export class CreateUserDto {
   // @Matches('(\\(?\\d{2}\\)?\\s)(\\d{4,5}\\-?\\d{4})')
   phone: string;
 
+  @IsOptional()
   @IsBoolean()
   is_staff?: boolean;
 
+  @IsOptional()
   @IsBoolean()
   is_admin?: boolean;
 }
