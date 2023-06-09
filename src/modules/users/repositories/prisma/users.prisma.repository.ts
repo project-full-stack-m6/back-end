@@ -13,7 +13,10 @@ export class UsersPrismaRepository implements UsersRepository {
   async create(data: CreateUserDto): Promise<User> {
     const user = new User();
     Object.assign(user, { ...data });
-    const newUser = await this.prisma.user.create({ data: { ...user } });
+    const newUser = await this.prisma.user.create({
+      data: { ...user },
+      include: { my_wallet: true },
+    });
     return plainToInstance(User, newUser);
   }
 
