@@ -29,4 +29,14 @@ export class WalletsController {
 
     return await this.walletsService.create(userEmail, userId);
   }
+
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard, StaffGuard)
+  @UseInterceptors(ClassSerializerInterceptor)
+  async delete(@Request() req, @Param() param) {
+    const userId: number = parseInt(req.user.id);
+    const contactId: number = parseInt(param.id);
+
+    return await this.walletsService.delete(userId, contactId);
+  }
 }

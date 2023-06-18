@@ -31,4 +31,8 @@ export class WalletsInMemoryRepository implements WalletsRepository {
 
     return wallet;
   }
+
+  delete(userId, contactId): void {
+    console.log(userId, contactId);
+  }
 }
