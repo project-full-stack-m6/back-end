@@ -55,15 +55,18 @@ export class WalletsPrismaRepository implements WalletsRepository {
     return wallet;
   }
 
-  async delete(userId, contactId): Promise<void> {
+  async delete(userId, contactId): Promise<Wallet> {
     const wallet = await this.prisma.wallet.findUnique({
       where: { user_id: userId },
       include: { contacts: true },
     });
 
-    await this.prisma.wallet.update({
+    const newWallet = await this.prisma.wallet.update({
       where: { id: wallet.id },
       data: { contacts: { disconnect: { id: contactId } } },
+      include: { contacts: true },
     });
+
+    return newWallet;
   }
 }

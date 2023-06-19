@@ -32,7 +32,13 @@ export class WalletsInMemoryRepository implements WalletsRepository {
     return wallet;
   }
 
-  delete(userId, contactId): void {
-    console.log(userId, contactId);
+  delete(userId, contactId): Wallet {
+    const wallet = this.wallets.find((wallet) => wallet.user_id === userId);
+
+    const newContacts = wallet.contacts.filter((user) => user.id !== contactId);
+
+    wallet.contacts = newContacts;
+
+    return wallet;
   }
 }

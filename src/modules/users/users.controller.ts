@@ -44,14 +44,23 @@ export class UsersController {
 
   @UseInterceptors(ClassSerializerInterceptor)
   @Patch(':id')
-  @UseGuards(JwtAuthGuard, AdminGuard)
+  @UseGuards(JwtAuthGuard)
   update(
     @Param('id') id: string,
     @Request() req,
     @Body() updateUserDto: UpdateUserDto,
   ) {
     const userId = parseInt(id);
-    return this.usersService.update(userId, req.user.email, updateUserDto);
+    const reqId = parseInt(req.user.id);
+    return this.usersService.update(userId, updateUserDto);
+  }
+
+  @UseInterceptors(ClassSerializerInterceptor)
+  @Patch()
+  @UseGuards(JwtAuthGuard)
+  updateMyUser(@Request() req, @Body() updateUserDto: UpdateUserDto) {
+    const userId = parseInt(req.user.id);
+    return this.usersService.updateMyUser(userId, updateUserDto);
   }
 
   @UseInterceptors(ClassSerializerInterceptor)

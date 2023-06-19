@@ -30,7 +30,7 @@ export class WalletsController {
     return await this.walletsService.create(userEmail, userId);
   }
 
-  @Delete(':id')
+  @Patch(':id')
   @UseGuards(JwtAuthGuard, StaffGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   async delete(@Request() req, @Param() param) {
