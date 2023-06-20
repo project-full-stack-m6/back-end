@@ -56,13 +56,17 @@ export class UsersService {
     return await this.usersRepository.update(userId, updateUserDto);
   }
 
-  async remove(id: number) {
+  async delete(id: number) {
     const findUser = await this.usersRepository.findOne(id);
 
     if (!findUser) {
       throw new NotFoundException({ message: 'User not found' });
     }
     return await this.usersRepository.delete(id);
+  }
+
+  async deleteMyUser(userId: number) {
+    return await this.usersRepository.delete(userId);
   }
 
   async validateStaff(email: string) {

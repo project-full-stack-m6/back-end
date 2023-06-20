@@ -66,8 +66,16 @@ export class UsersController {
   @UseInterceptors(ClassSerializerInterceptor)
   @Delete(':id')
   @UseGuards(JwtAuthGuard, AdminGuard)
-  remove(@Param('id') id: string) {
+  delete(@Param('id') id: string) {
     const userId = parseInt(id);
-    return this.usersService.remove(userId);
+    return this.usersService.delete(userId);
+  }
+
+  @UseInterceptors(ClassSerializerInterceptor)
+  @Delete()
+  @UseGuards(JwtAuthGuard)
+  deleteMyUser(@Request() req) {
+    const userId = parseInt(req.user.id);
+    return this.usersService.deleteMyUser(userId);
   }
 }
