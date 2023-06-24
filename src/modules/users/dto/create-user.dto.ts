@@ -3,25 +3,25 @@ import { Transform } from 'class-transformer';
 import {
   IsEmail,
   IsString,
-  IsEmpty,
   IsNotEmpty,
   IsBoolean,
   MinLength,
-  validate,
-  Matches,
-  isEmpty,
-  IsObject,
   IsOptional,
 } from 'class-validator';
 
+import { ApiProperty } from '@nestjs/swagger';
+
 export class CreateUserDto {
+  @ApiProperty()
   @IsEmail()
   @IsNotEmpty()
   email: string;
 
+  @ApiProperty()
   @IsString()
   name: string;
 
+  @ApiProperty()
   @IsNotEmpty()
   @IsString()
   @MinLength(4)
@@ -30,15 +30,18 @@ export class CreateUserDto {
   })
   password: string;
 
+  @ApiProperty()
   @IsNotEmpty()
   @IsString()
   // @Matches('(\\(?\\d{2}\\)?\\s)(\\d{4,5}\\-?\\d{4})')
   phone: string;
 
+  @ApiProperty()
   @IsOptional()
   @IsBoolean()
   is_staff?: boolean;
 
+  @ApiProperty()
   @IsOptional()
   @IsBoolean()
   is_admin?: boolean;

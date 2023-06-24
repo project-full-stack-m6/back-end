@@ -15,13 +15,16 @@ import { WalletsService } from './wallets.service';
 import { CreateWalletDto } from './dto/create-wallet.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth-guard';
 import { StaffGuard } from '../auth/is_staff-auth.guard';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('wallets')
 @Controller('wallets')
 export class WalletsController {
   constructor(private readonly walletsService: WalletsService) {}
 
   @Post()
   @UseGuards(JwtAuthGuard, StaffGuard)
+  @ApiBearerAuth()
   @UseInterceptors(ClassSerializerInterceptor)
   async create(@Request() req, @Body() createWalletDto: CreateWalletDto) {
     const userId: number = parseInt(req.user.id);
@@ -32,6 +35,7 @@ export class WalletsController {
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard, StaffGuard)
+  @ApiBearerAuth()
   @UseInterceptors(ClassSerializerInterceptor)
   async delete(@Request() req, @Param() param) {
     const userId: number = parseInt(req.user.id);
