@@ -3,6 +3,7 @@ import {
   CanActivate,
   ExecutionContext,
   ForbiddenException,
+  NotFoundException,
 } from '@nestjs/common';
 import { UsersRepository } from '../users/repositories/users.repository';
 
@@ -16,10 +17,16 @@ export class StaffGuard implements CanActivate {
 
     const findUser = await this.usersRepository.findByEmail(user.email);
 
-    if (findUser.is_staff) {
-      return true;
+    if (!findUser) {
+      throw new NotFoundException('O usuário não existe');
     }
 
-    throw new ForbiddenException('Apenas vendedores podem acessar esta rota.');
+    if (findUser.is_staff) {
+      return true;
+    } else {
+      throw new ForbiddenException(
+        'Apenas vendedores podem acessar esta rota.',
+      );
+    }
   }
 }
