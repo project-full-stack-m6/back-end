@@ -42,7 +42,16 @@ export class WalletsService {
     return `This action updates a #${id} wallet`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} wallet`;
+  async delete(userId: number, contactId: number) {
+    const findUser = await this.usersRepository.findOne(userId);
+
+    if (!findUser) {
+      throw new NotFoundException({ message: 'User not found' });
+    } else if (findUser.id === contactId) {
+      throw new ConflictException({
+        message: 'Você não pode remover a si mesmo',
+      });
+    }
+    return this.walletsRepository.delete(userId, contactId);
   }
 }

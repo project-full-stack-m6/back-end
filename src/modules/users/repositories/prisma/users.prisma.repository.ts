@@ -28,7 +28,10 @@ export class UsersPrismaRepository implements UsersRepository {
   async findOne(userId): Promise<User> {
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
-      include: { my_wallet: { include: { contacts: true } } },
+      include: {
+        my_wallet: { include: { contacts: true } },
+        wallets_client: { include: { user: true } },
+      },
     });
     return plainToInstance(User, user);
   }
@@ -49,6 +52,7 @@ export class UsersPrismaRepository implements UsersRepository {
 
     return plainToInstance(User, user);
   }
+
   async delete(id: number): Promise<void> {
     await this.prisma.user.delete({ where: { id: id } });
   }

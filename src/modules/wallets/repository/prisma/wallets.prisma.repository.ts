@@ -24,13 +24,13 @@ export class WalletsPrismaRepository implements WalletsRepository {
       });
 
       const createWallet = await this.prisma.wallet.create({
-        data: { user_id: newWallet.user_id },
+        data: { user_id: userId },
         include: { contacts: true },
       });
 
       const update = await this.prisma.wallet.update({
-        where: { user_id: userId },
-        data: { contacts: { set: [...createWallet.contacts, user] } },
+        where: { id: createWallet.id },
+        data: { contacts: { connect: { id: user.id } } },
         include: { contacts: true },
       });
 
@@ -53,5 +53,20 @@ export class WalletsPrismaRepository implements WalletsRepository {
     });
 
     return wallet;
+  }
+
+  async delete(userId, contactId): Promise<Wallet> {
+    const wallet = await this.prisma.wallet.findUnique({
+      where: { user_id: userId },
+      include: { contacts: true },
+    });
+
+    const newWallet = await this.prisma.wallet.update({
+      where: { id: wallet.id },
+      data: { contacts: { disconnect: { id: contactId } } },
+      include: { contacts: true },
+    });
+
+    return newWallet;
   }
 }

@@ -19,6 +19,7 @@ export class AuthService {
         return { email: user.email };
       }
     }
+
     return null;
   }
 
